@@ -1,0 +1,34 @@
+git:
+  pagers:
+    - # pager: delta --dark --paging=never --syntax-theme base16-256 --diff-so-fancy --pager bat
+      pager: delta  --dark --paging=never
+      colorArg: always
+gui:
+  sidePanelWidth: 0.2
+  expandFocusedSidePanel: true
+  skipDiscardChangeWarning: true
+  mainPanelSplitMode: "flexible"
+  nerdFontsVersion: "3"
+  showBranchCommitHash: true
+  # showDivergenceFromBaseBranch: "arrowAndNumber"
+  theme:
+    #   unstagedChangesColor:
+    #     - "#e82424"
+    activeBorderColor:
+      - "#ff9e3b"
+      - "bold"
+    cherryPickedCommitBgColor:
+      - "#e6c384"
+    cherryPickedCommitFgColor:
+      - "#7e9cd8"
+    defaultFgColor:
+      - "#dcd7ba"
+    inactiveBorderColor:
+      - "#54546d"
+    optionsTextColor:
+      - "#7e9cd8"
+    searchingActiveBorderColor:
+      - "#ff9e3b"
+      - "bold"
+    # selectedLineBgColor:
+    #   - "#223249"

@@ -1,0 +1,27 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C++ lldb",
+      "type": "lldb",
+      "request": "launch",
+      "preLaunchTask": "Compile lldb",
+      "postDebugTask": "Clean",
+      "expressions": "native",
+      "program": "${workspaceFolder}/${fileBasenameNoExtension}",
+      "stopOnEntry": false
+    },
+    {
+      "name": "C++ cpptools",
+      "type": "cpptools",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "preLaunchTask": "Compile G++",
+      "postDebugTask": "Clean",
+      "expressions": "native",
+      "miDebuggerPath": "/usr/bin/gdb",
+      "program": "${workspaceFolder}/${fileBasenameNoExtension}",
+      "stopAtEntry": true
+    }
+  ]
+}
