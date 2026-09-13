@@ -11,3 +11,5 @@ require("editorconfig").properties.auto_format = function(bufnr, val, opts)
     vim.g.disable_autoformat = false
   end
 end
+
+vim.cmd([[iabbrev ddate <C-r>=strftime("%Y-%m-%d")<CR>]])

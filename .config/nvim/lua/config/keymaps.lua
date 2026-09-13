@@ -1,19 +1,20 @@
+vim.keymap.set("n", "<leader>uu", require("undotree").open, { desc = "Open Undotree" })
+
 -- Keymaps are automatically loaded on the VeryLazy event
 -- Add any additional keymaps here
 local kmap = vim.keymap.set
 
 -- Should be able to get the path from nvim vars...?
+local nvim_conf = "~/.config/nvim/lua"
 local tmux_conf = "~/.config/tmux/tmux.conf"
 local bashrcd = "~/.bashrc.d/"
 local g_gitconfig = "~/.gitconfig"
 
 -- Edit common files
+kmap("n", "<leader>en", ":tabedit" .. nvim_conf .. "<CR>", { desc = "Edit nvim.conf" })
 kmap("n", "<leader>et", ":tabedit" .. tmux_conf .. "<CR>", { desc = "Edit tmux.conf" })
 kmap("n", "<leader>eb", ":tabedit" .. bashrcd .. "<CR>", { desc = "Edit bashrc.d" })
 kmap("n", "<leader>eg", ":tabedit" .. g_gitconfig .. "<CR>", { desc = "Edit global gitconfig" })
-
--- Suppress help
-kmap({ "n", "v", "i" }, "<F1>", "<nop>", { desc = "Don't spit help at me" })
 
 -- buffers
 kmap("n", "<leader>bd", ":bd<CR>", { desc = "Buffer delete" })
@@ -58,8 +59,8 @@ kmap("n", "<leader>xq", "<cmd>copen<cr>", { desc = "Quickfix List" })
 -- kmap("n", "[q", vim.cmd.cprev, { desc = "Previous quickfix" })
 -- kmap("n", "]q", vim.cmd.cnext, { desc = "Next quickfix" })
 
--- lazy
-kmap("n", "<leader>Ol", "<cmd>Lazy<cr>", { desc = "Lazy" })
+-- -- lazy
+-- kmap("n", "<leader>Ol", "<cmd>Lazy<cr>", { desc = "Lazy" })
 
 -- Diagnostics -----------------------------------------------------------------
 local diagnostic_goto = function(next, severity)
@@ -99,7 +100,83 @@ kmap("o", "N", "'nN'[v:searchforward].'zz'", { expr = true, desc = "Prev search 
 -- new file
 kmap("n", "<leader>fn", "<cmd>enew<cr>", { desc = "New File" })
 
+--]]
 -- Look at putting in LSP attach mappings...
 kmap("n", "gv", ":vsplit | lua vim.lsp.buf.definition()<CR>", { desc = "Go to definition in vertical split" })
 
---]]
+-- buffers
+kmap("n", "<leader>bd", ":bd<CR>", { desc = "Buffer delete" })
+
+-- To review -------------------------------------------------------------------
+-- Disable Space bar since it will be used as the leader key
+vim.keymap.set({ "n", "v" }, "<leader>", "<nop>", { desc = "Disable leader key default" })
+
+-- -- Save and quit current file quicker
+-- vim.keymap.set("n", "<leader>w", ":w<cr>", { silent = true, noremap = true, desc = "Save current file" })
+-- vim.keymap.set({ "n", "t" }, "<leader>q", ":q<cr>", { silent = true, noremap = true, desc = "Quit current buffer" })
+
+-- Navigate through buffers
+vim.keymap.set("n", "<S-l>", ":bnext<CR>", { silent = true, desc = "Next buffer" })
+vim.keymap.set("n", "<S-h>", ":bprevious<CR>", { silent = true, desc = "Previous buffer" })
+
+-- -- Center buffer when navigating up and down
+-- vim.keymap.set("n", "<S-k>", "<C-u>zz", { desc = "Scroll up and center" })
+-- vim.keymap.set("n", "<S-j>", "<C-d>zz", { desc = "Scroll down and center" })
+
+-- Center buffer when progressing through search results
+vim.keymap.set("n", "n", "nzzzv", { desc = "Next search result centered" })
+vim.keymap.set("n", "N", "Nzzzv", { desc = "Previous search result centered" })
+
+-- Paste without replacing paste with what you are highlighted over
+vim.keymap.set("n", "<leader>p", '"_dP', { desc = "Paste without replacing register" })
+
+-- Yank to system clipboard
+vim.keymap.set("n", "<leader>y", '"+y', { desc = "Yank to system clipboard" })
+vim.keymap.set("v", "<leader>y", '"+y', { desc = "Yank selection to system clipboard" })
+vim.keymap.set("n", "<leader>Y", '"+Y', { desc = "Yank line to system clipboard" })
+
+-- Open buffer to the right
+vim.keymap.set("n", "<leader>v", ":vsplit<CR>", { silent = true, desc = "Vertical split" })
+
+-- -- Move selection up and down
+-- vim.keymap.set("v", "<C-j>", ":m '>+1<CR>gv=gv", { silent = true, desc = "Move selection down" })
+-- vim.keymap.set("v", "<C-k>", ":m '<-2<CR>gv=gv", { silent = true, desc = "Move selection up" })
+
+-- Copy file path / selection reference for pasting into AI chats
+local function copy_ref(opts)
+  -- "%" is the current buffer's file name; ":." makes it relative to the cwd
+  local path = vim.fn.expand("%:.")
+  -- ref is what ends up in the clipboard; start with just the path
+  local ref = path
+
+  if opts.visual then
+    -- '< and '> are only set after leaving visual mode, so read the live selection:
+    -- "v" is the line where visual mode was started (the anchor)
+    local start_line = vim.fn.line("v")
+    -- "." is the line the cursor is on now (the moving end of the selection)
+    local end_line = vim.fn.line(".")
+    -- if the selection was made upward, swap so start is always the smaller line
+    if start_line > end_line then
+      start_line, end_line = end_line, start_line
+    end
+    -- append the range, e.g. "lua/config/keymaps.lua:1:23"
+    ref = path .. ":" .. start_line .. ":" .. end_line
+  end
+
+  -- ask for an optional free-text note on the command line (Enter to skip)
+  local note = vim.fn.input("Prompt (optional): ")
+  if note ~= "" then
+    -- append the note after the ref, separated by a space
+    ref = ref .. " " .. note
+  end
+
+  -- write ref into the "+" register, which is the system clipboard
+  vim.fn.setreg("+", ref)
+  -- show a confirmation message with what was copied
+  vim.notify("Copied: " .. ref)
+end
+
+-- visual mode: copy the file path plus the selected line range
+vim.keymap.set("v", "<leader>cp", function()
+  copy_ref({ visual = true })
+end, { desc = "Copy file path with line range" })
