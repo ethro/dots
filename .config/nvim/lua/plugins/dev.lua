@@ -90,8 +90,19 @@ blink.setup({
           prefix_min_len = 3,
           backend = {
             use = "gitgrep-or-ripgrep",
+            -- use = "ripgrep",
+            ripgrep = {
+              ignore_paths = { os.getenv("HOME") },
+            },
           },
         },
+        enabled = false,
+        -- enabled = function()
+        --   local _cwd = string.lower(vim.fn.getcwd())
+        --   local _home = string.lower(os.getenv("HOME"))
+        --
+        --   return _cwd ~= _home
+        -- end,
       },
     },
   },
@@ -128,24 +139,24 @@ gitsigns.setup({
     end
     kmap("n", "]g", gs.next_hunk, "Next Hunk")
     kmap("n", "[g", gs.prev_hunk, "Prev Hunk")
-    kmap({ "n", "v" }, "<leader>Gs", ":Gitsigns stage_hunk<CR>", "Stage Hunk")
-    kmap({ "n", "v" }, "<leader>Gr", ":Gitsigns reset_hunk<CR>", "Reset Hunk")
-    kmap("n", "<leader>GS", gs.stage_buffer, "Stage Buffer")
-    kmap("n", "<leader>Gu", gs.undo_stage_hunk, "Undo Stage Hunk")
-    kmap("n", "<leader>GR", gs.reset_buffer, "Reset Buffer")
-    kmap("n", "<leader>Gp", gs.preview_hunk, "Preview Hunk")
-    kmap("n", "<leader>Gb", function()
+    kmap({ "n", "v" }, "<leader>gs", ":Gitsigns stage_hunk<CR>", "Stage Hunk")
+    kmap({ "n", "v" }, "<leader>gr", ":Gitsigns reset_hunk<CR>", "Reset Hunk")
+    kmap("n", "<leader>gS", gs.stage_buffer, "Stage Buffer")
+    kmap("n", "<leader>gu", gs.undo_stage_hunk, "Undo Stage Hunk")
+    kmap("n", "<leader>gR", gs.reset_buffer, "Reset Buffer")
+    kmap("n", "<leader>gp", gs.preview_hunk, "Preview Hunk")
+    kmap("n", "<leader>gb", function()
       gs.blame_line({ full = true })
     end, "Blame Line")
-    kmap("n", "<leader>GB", function()
+    kmap("n", "<leader>gB", function()
       gs.blame({ full = true })
     end, "Blame")
-    kmap("n", "<leader>Gd", gs.diffthis, "Diff This")
-    kmap("n", "<leader>GD", function()
+    kmap("n", "<leader>gd", gs.diffthis, "Diff This")
+    kmap("n", "<leader>gD", function()
       gs.diffthis("~")
     end, "Diff This ~")
     kmap({ "o", "x" }, "<leader>Gh", ":<C-U>Gitsigns select_hunk<CR>", "GitSigns Select Hunk")
-    kmap("n", "<leader>Gq", function()
+    kmap("n", "<leader>gq", function()
       for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
         local buf = vim.api.nvim_win_get_buf(win)
         local bufname = vim.api.nvim_buf_get_name(buf)
@@ -307,7 +318,6 @@ require("mason-tool-installer").setup({
     "docker-language-server",
     "flake8",
     "gopls",
-    "harper-ls",
     "lua_ls",
     "marksman",
     "mpls",
@@ -597,6 +607,10 @@ snacks.setup({
   notify = { enabled = false },
   picker = {
     enabled = true,
+    files = {
+      ignored = true,
+      hidden = true,
+    },
     layout = "ivy",
     formatters = {
       file = {
@@ -629,21 +643,74 @@ vim.keymap.set("n", "<leader>n",       function() Snacks.picker.notifications() 
 vim.keymap.set("n", "<leader>fb",      function() Snacks.picker.buffers() end,                                     { desc = "Buffers" })
 vim.keymap.set("n", "<leader>fc",      function() Snacks.picker.files({ cwd = vim.fn.stdpath("config") }) end,     { desc = "Find Config File" })
 vim.keymap.set("n", "<leader>ff",      function() Snacks.picker.files() end,                                       { desc = "Find Files" })
+vim.keymap.set("n", "<leader>fF",      function()
+  -- Get a list of all direcotries in the workspace
+  local workspace_path = vim.fn.getcwd()
+  local directories = vim.fn.systemlist("find " .. workspace_path .. " -type d")
+
+  -- Preset the directories to the user for selection
+  vim.ui.select(directories, {
+    prompt = "Select a directory:",
+    format_item = function (item)
+      return item
+    end
+  }, function (choice)
+    if choice then
+        Snacks.picker.files({ dirs = {choice }, hidden = true, ignored = true })
+      else
+        print("No directory selected")
+      end
+  end) end, { desc = "Find Files in directory" })
 vim.keymap.set("n", "<leader>fg",      function() Snacks.picker.git_files() end,                                   { desc = "Find Git Files" })
 vim.keymap.set("n", "<leader>fp",      function() Snacks.picker.projects() end,                                    { desc = "Projects" })
 vim.keymap.set("n", "<leader>fr",      function() Snacks.picker.recent() end,                                      { desc = "Recent" })
 -- git
-vim.keymap.set("n", "<leader>gb",      function() Snacks.picker.git_branches() end,                                { desc = "Git Branches" })
 vim.keymap.set("n", "<leader>gl",      function() Snacks.picker.git_log() end,                                     { desc = "Git Log" })
 vim.keymap.set("n", "<leader>gL",      function() Snacks.picker.git_log_line() end,                                { desc = "Git Log Line" })
-vim.keymap.set("n", "<leader>gs",      function() Snacks.picker.git_status() end,                                  { desc = "Git Status" })
-vim.keymap.set("n", "<leader>gS",      function() Snacks.picker.git_stash() end,                                   { desc = "Git Stash" })
-vim.keymap.set("n", "<leader>gd",      function() Snacks.picker.git_diff() end,                                    { desc = "Git Diff (Hunks)" })
+vim.keymap.set("n", "<leader>gi",      function() Snacks.picker.git_status() end,                                  { desc = "Git Status" })
+vim.keymap.set("n", "<leader>ge",      function() Snacks.picker.git_diff() end,                                    { desc = "Git Diff (Hunks)" })
 vim.keymap.set("n", "<leader>gf",      function() Snacks.picker.git_log_file() end,                                { desc = "Git Log File" })
 -- Grep
 vim.keymap.set("n", "<leader>sb",      function() Snacks.picker.lines() end,                                       { desc = "Buffer Lines" })
 vim.keymap.set("n", "<leader>sB",      function() Snacks.picker.grep_buffers() end,                                { desc = "Grep Open Buffers" })
-vim.keymap.set("n", "<leader>sg",      function() Snacks.picker.grep() end,                                        { desc = "Grep" })
+vim.keymap.set("n", "<leader>sg",      function() Snacks.picker.grep({hidden = true, ignored=true}) end,           { desc = "Grep" })
+vim.keymap.set("n", "<leader>sG",      function()
+  -- Get a list of all direcotries in the workspace
+  local workspace_path = vim.fn.getcwd()
+  local directories = vim.fn.systemlist("find " .. workspace_path .. " -type d")
+
+  -- Preset the directories to the user for selection
+  vim.ui.select(directories, {
+    prompt = "Select a directory:",
+    format_item = function (item)
+      return item
+    end
+  }, function (choice)
+    if choice then
+        Snacks.picker.grep({ dirs = {choice }, hidden = true, ignored = true })
+      else
+        print("No directory selected")
+      end
+  end) end, { desc = "Grep in directory" })
+vim.keymap.set("n", "<leader>sW",      function()
+  -- Get a list of all direcotries in the workspace
+  local workspace_path = vim.fn.getcwd()
+  local directories = vim.fn.systemlist("find " .. workspace_path .. " -type d")
+
+  -- Preset the directories to the user for selection
+  vim.ui.select(directories, {
+    prompt = "Select a directory:",
+    format_item = function (item)
+      return item
+    end
+  }, function (choice)
+    if choice then
+        Snacks.picker.grep_word({ dirs = {choice }, hidden = true, ignored = true })
+      else
+        print("No directory selected")
+      end
+  end) end, { desc = "Grep word in directory" })
+
 vim.keymap.set({"n","x"}, "<leader>sw",      function() Snacks.picker.grep_word() end,                                 { desc = "Visual selection or word"})
 -- search
 vim.keymap.set("n", '<leader>s"',      function() Snacks.picker.registers() end,                                   { desc = "Registers" })
@@ -683,7 +750,7 @@ vim.keymap.set("n", "<leader>S",       function() Snacks.scratch.select() end,  
 vim.keymap.set("n", "<leader>n",       function() Snacks.notifier.show_history() end,                              { desc = "Notification History" })
 vim.keymap.set("n", "<leader>bd",      function() Snacks.bufdelete() end,                                          { desc = "Delete Buffer" })
 vim.keymap.set("n", "<leader>cR",      function() Snacks.rename.rename_file() end,                                 { desc = "Rename File" })
-vim.keymap.set({"n", "v"}, "<leader>gB",      function() Snacks.gitbrowse() end,                                       { desc = "Git Browse"})
+-- vim.keymap.set({"n", "v"}, "<leader>gB",      function() Snacks.gitbrowse() end,                                       { desc = "Git Browse"})
 vim.keymap.set("n", "<leader>gg",      function() Snacks.lazygit() end,                                            { desc = "Lazygit" })
 vim.keymap.set("n", "<leader>un",      function() Snacks.notifier.hide() end,                                      { desc = "Dismiss All Notifications" })
 vim.keymap.set("n", "<c-/>",           function() Snacks.terminal() end,                                           { desc = "Toggle Terminal" })
@@ -718,6 +785,14 @@ Snacks.toggle.option("background", { off = "light", on = "dark", name = "Dark Ba
 Snacks.toggle.inlay_hints():map("<leader>uh")
 Snacks.toggle.indent():map("<leader>ug")
 Snacks.toggle.dim():map("<leader>uD")
+
+vim.api.nvim_create_autocmd("BufEnter", {
+  callback = function()
+    if vim.wo.diff then
+      Snacks.toggle.diagnostics():set(false)
+    end
+  end,
+})
 
 -- trouble -----------------------------
 local trouble = require("trouble")

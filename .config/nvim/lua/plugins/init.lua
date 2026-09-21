@@ -1,102 +1,108 @@
+local gh = function(x)
+  return "https://github.com/" .. x
+end
+
 vim.pack.add({
   -- File navigation
-  "https://github.com/stevearc/oil.nvim",
+  gh("stevearc/oil.nvim"),
 
   -- Appearance
-  "https://github.com/rebelot/kanagawa.nvim",
-  "https://github.com/nvim-tree/nvim-web-devicons",
-  "https://github.com/folke/which-key.nvim",
-  "https://github.com/m4xshen/smartcolumn.nvim", -- review
-  "https://github.com/echasnovski/mini.statusline",
-  "https://github.com/nvzone/showkeys",
-  "https://github.com/folke/todo-comments.nvim",
-  "https://github.com/xzbdmw/colorful-menu.nvim",
-  -- "https://github.com/nvim-lualine/lualine.nvim", -- review
+  gh("rebelot/kanagawa.nvim"),
+  gh("nvim-tree/nvim-web-devicons"),
+  gh("folke/which-key.nvim"),
+  gh("m4xshen/smartcolumn.nvim"), -- review
+  gh("echasnovski/mini.statusline"),
+  gh("nvzone/showkeys"),
+  gh("folke/todo-comments.nvim"),
+  gh("xzbdmw/colorful-menu.nvim"),
+  -- gh("nvim-lualine/lualine.nvim"), -- review
 
   -- LSP, completion, and formatting
-  "https://github.com/L3MON4D3/LuaSnip",
-  "https://github.com/Saghen/blink.lib",
-  "https://github.com/Saghen/blink.cmp",
-  "https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim",
-  "https://github.com/mason-org/mason-lspconfig.nvim",
-  "https://github.com/mason-org/mason.nvim",
-  "https://github.com/mikavilpas/blink-ripgrep.nvim",
-  "https://github.com/neovim/nvim-lspconfig",
-  "https://github.com/rachartier/tiny-code-action.nvim",
-  "https://github.com/rmagatti/logger.nvim",
-  "https://github.com/rmagatti/goto-preview",
-  "https://github.com/stevearc/conform.nvim",
-  "https://github.com/mfussenegger/nvim-lint",
+  gh("L3MON4D3/LuaSnip"),
+  gh("Saghen/blink.lib"),
+  gh("Saghen/blink.cmp"),
+  gh("WhoIsSethDaniel/mason-tool-installer.nvim"),
+  gh("mason-org/mason-lspconfig.nvim"),
+  gh("mason-org/mason.nvim"),
+  gh("mikavilpas/blink-ripgrep.nvim"),
+  gh("neovim/nvim-lspconfig"),
+  gh("rachartier/tiny-code-action.nvim"),
+  gh("rmagatti/logger.nvim"),
+  gh("rmagatti/goto-preview"),
+  gh("stevearc/conform.nvim"),
+  gh("mfussenegger/nvim-lint"),
 
   -- Syntax and editing
-  "https://github.com/nvim-treesitter/nvim-treesitter",
+  gh("nvim-treesitter/nvim-treesitter"),
 
   -- Diagnostics and command line
-  -- "https://github.com/rachartier/tiny-cmdline.nvim", -- review
-  "https://github.com/stevearc/quicker.nvim", -- review
-  "https://github.com/j-hui/fidget.nvim",
-  "https://github.com/artemave/workspace-diagnostics.nvim",
+  -- gh("rachartier/tiny-cmdline.nvim"), -- review
+  gh("stevearc/quicker.nvim"), -- review
+  gh("j-hui/fidget.nvim"),
+  gh("artemave/workspace-diagnostics.nvim"),
 
   -- Git, diff
-  "https://github.com/martindur/zdiff.nvim", -- review
-  "https://github.com/lewis6991/gitsigns.nvim",
-  "https://github.com/sindrets/diffview.nvim",
+  gh("martindur/zdiff.nvim"), -- review
+  gh("lewis6991/gitsigns.nvim"),
+  gh("sindrets/diffview.nvim"),
 
   -- Testing
-  "https://github.com/nvim-lua/plenary.nvim",
+  gh("nvim-lua/plenary.nvim"),
 
   -- Developer utilities
-  "https://github.com/MagicDuck/grug-far.nvim",
-  "https://github.com/arborist-ts/arborist.nvim",
-  "https://github.com/chrisgrieser/nvim-chainsaw",
-  "https://github.com/folke/persistence.nvim",
-  "https://github.com/folke/snacks.nvim",
-  "https://github.com/folke/trouble.nvim",
-  "https://github.com/stevearc/overseer.nvim",
+  gh("MagicDuck/grug-far.nvim"),
+  gh("arborist-ts/arborist.nvim"),
+  gh("chrisgrieser/nvim-chainsaw"),
+  gh("folke/persistence.nvim"),
+  gh("folke/snacks.nvim"),
+  gh("folke/trouble.nvim"),
+  gh("stevearc/overseer.nvim"),
 
   -- Debug
-  "https://github.com/mfussenegger/nvim-dap",
-  "https://github.com/mfussenegger/nvim-dap-python",
-  "https://github.com/nvim-neotest/nvim-nio",
-  "https://github.com/rcarriga/nvim-dap-ui",
-  "https://github.com/theHamsta/nvim-dap-virtual-text",
+  gh("mfussenegger/nvim-dap"),
+  gh("mfussenegger/nvim-dap-python"),
+  gh("nvim-neotest/nvim-nio"),
+  gh("rcarriga/nvim-dap-ui"),
+  gh("theHamsta/nvim-dap-virtual-text"),
 
   -- Extras
-  "https://github.com/EdenEast/nightfox.nvim",
-  "https://github.com/FabijanZulj/blame.nvim",
-  "https://github.com/RaafatTurki/hex.nvim",
-  "https://github.com/cappyzawa/trim.nvim",
-  "https://github.com/catppuccin/nvim",
-  "https://github.com/chrisgrieser/nvim-scissors",
-  "https://github.com/danymat/neogen",
-  "https://github.com/folke/styler.nvim",
-  "https://github.com/folke/tokyonight.nvim",
-  "https://github.com/marko-cerovac/material.nvim",
-  "https://github.com/mofiqul/dracula.nvim",
-  "https://github.com/sbulav/nredir.nvim",
-  "https://github.com/sho-87/kanagawa-paper.nvim",
+  gh("EdenEast/nightfox.nvim"),
+  gh("FabijanZulj/blame.nvim"),
+  gh("RaafatTurki/hex.nvim"),
+  gh("cappyzawa/trim.nvim"),
+  gh("catppuccin/nvim"),
+  gh("chrisgrieser/nvim-scissors"),
+  gh("danymat/neogen"),
+  gh("folke/styler.nvim"),
+  gh("folke/tokyonight.nvim"),
+  gh("marko-cerovac/material.nvim"),
+  gh("mofiqul/dracula.nvim"),
+  gh("sbulav/nredir.nvim"),
+  gh("sho-87/kanagawa-paper.nvim"),
 
   -- To review ---------------------------------------------------------------
+  gh("zk-org/zk-nvim"),
+
   -- File navigation
-  -- "https://github.com/nvim-telescope/telescope.nvim",
-  -- "https://github.com/nvim-telescope/telescope-fzf-native.nvim",
-  -- "https://github.com/nvim-telescope/telescope-ui-select.nvim",
-  -- "https://github.com/nvim-telescope/telescope-frecency.nvim",
+  -- gh("nvim-telescope/telescope.nvim"),
+  -- gh("nvim-telescope/telescope-fzf-native.nvim"),
+  -- gh("nvim-telescope/telescope-ui-select.nvim"),
+  -- gh("nvim-telescope/telescope-frecency.nvim"),
 
   -- Appearance
 
   -- LSP, completion, and formatting
-  -- "https://github.com/b0o/SchemaStore.nvim",
+  -- gh("b0o/SchemaStore.nvim"),
 
   -- Testing
-  -- "https://github.com/nvim-neotest/neotest",
-  -- "https://github.com/nvim-neotest/nvim-nio",
-  -- "https://github.com/antoinemadec/FixCursorHold.nvim",
-  -- "https://github.com/fredrikaverpil/neotest-golang",
+  -- gh("nvim-neotest/neotest"),
+  -- gh("nvim-neotest/nvim-nio"),
+  -- gh("antoinemadec/FixCursorHold.nvim"),
+  -- gh("fredrikaverpil/neotest-golang"),
 
   -- Go tools
-  -- "https://github.com/fredrikaverpil/godoc.nvim",
-  -- "https://github.com/olexsmir/gopher.nvim",
+  -- gh("fredrikaverpil/godoc.nvim"),
+  -- gh("olexsmir/gopher.nvim"),
 })
 
 require("plugins.base")

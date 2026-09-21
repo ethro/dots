@@ -45,7 +45,7 @@ oil.setup({
       end,
       desc = "Copy the path of the file under the cursor to the + register.",
     },
-    gs = {
+    SG = {
       callback = function()
         -- get the current directory
         local prefills = { paths = oil.get_current_dir() }
